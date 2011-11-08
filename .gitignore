@@ -1,0 +1,9 @@
+.DS_Store
+/build
+prj.el
+build.properties
+/.idea
+*.iml
+/out
+lib/jescov-ant*.jar
+src/gen

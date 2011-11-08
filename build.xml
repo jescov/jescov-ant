@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project basedir="." default="jar" name="jescov-ant">
+  <description>
+    JesCov-ant is a collection of Ant tasks for JesCov
+  </description>
+
+  <property file="build.properties"/>
+  <property file="default.build.properties"/>
+
+  <path id="libs.classpath">
+    <fileset dir="${lib.dir}" includes="*.jar" excludes="jescov-ant*.jar"/>
+  </path>
+
+  <path id="build.main.classpath">
+    <path refid="libs.classpath"/>
+  </path>
+
+  <target name="prepare" description="Creates the directories needed for building">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${main.classes.dir}"/>
+  </target>
+
+  <target name="compile" depends="prepare" description="Compile the source files for the project.">
+    <javac destdir="${main.classes.dir}" source="${javac.version}" target="${javac.version}" debug="true" encoding="UTF-8" includeantruntime="true">
+      <classpath refid="build.main.classpath"/>
+      <src path="${src.dir}"/>
+      <include name="**/*.java"/>
+    </javac>
+
+    <copy todir="${main.classes.dir}" filtering="true" overwrite="true">
+      <fileset dir="${src.dir}" includes="**/*.properties"/>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile" description="Create the jescov-ant.jar file">
+    <jar destfile="${lib.dir}/jescov-ant-0.0.1.jar">
+      <fileset dir="${main.classes.dir}">
+        <include name="**/*.class"/>
+        <include name="**/*.properties"/>
+      </fileset>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean" description="clean almost everything">
+    <delete dir="${build.dir}"/>
+  </target>
+</project>
